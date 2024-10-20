@@ -47,7 +47,7 @@ app.prepare().then(() => {
         text: "a user leaving the chat",
       };
 
-      io.emit("receiveMessage", notif);
+      io.emit("receiveMessage", msg);
     });
   });
 
