@@ -12,6 +12,18 @@ const Chat = () => {
   useEffect(() => {
     socket = io();
 
+    const fetchMessages = async () => {
+      try {
+        const response = await fetch("../api/messages");
+        const initialMessages = await response.json();
+        setMessages(initialMessages);
+      } catch (error) {
+        console.error("Failed to fetch messages:", error);
+      }
+    };
+
+    fetchMessages();
+
     socket.on("receiveMessage", (msg) => {
       setMessages((prevMessages) => [...prevMessages, msg]);
     });
@@ -47,7 +59,7 @@ const Chat = () => {
           }
         })}
       </div>
-      <div className= "flex mt-4 w-1/2 mx-auto">
+      <div className="flex mt-4 w-1/2 mx-auto">
         <input
           type="text"
           className="flex-1 p-2 border border-gray-300  rounded-l-lg text-slate-800"
