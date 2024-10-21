@@ -25,7 +25,7 @@ app.prepare().then(() => {
     msg = {
       id: socket.id,
       is_notification: true,
-      text: "an user joined the chat",
+      text: "a user joined the chat",
     };
     io.emit("receiveMessage", msg);
 
@@ -39,15 +39,15 @@ app.prepare().then(() => {
     });
 
     socket.on("disconnect", () => {
-      console.log("An user disconnected", socket.id);
+      console.log("a user disconnected", socket.id);
 
       msg = {
         id: socket.id,
         is_notification: true,
-        text: "an user leaving the chat",
+        text: "a user leaving the chat",
       };
 
-      io.emit("receiveMessage", notif);
+      io.emit("receiveMessage", msg);
     });
   });
 
