@@ -1,7 +1,7 @@
-const { createServer } = require("http");
-const { parse } = require("url");
-const next = require("next");
-const { Server } = require("socket.io");
+import { createServer } from "http";
+import { parse } from "url";
+import next from "next";
+import { Server } from "socket.io";
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -19,35 +19,35 @@ app.prepare().then(() => {
       methods: ["GET", "POST"],
     },
   });
-  let msg;
 
   io.on("connection", (socket) => {
-    msg = {
-      id: socket.id,
-      is_notification: true,
-      text: "a user joined the chat",
-    };
-    io.emit("receiveMessage", msg);
-
-    socket.on("sendMessage", (text) => {
-      msg = {
-        id: socket.id,
-        is_notification: false,
-        text: text,
-      };
-      io.emit("receiveMessage", msg);
-    });
-
-    socket.on("disconnect", () => {
-      console.log("a user disconnected", socket.id);
-
-      msg = {
-        id: socket.id,
-        is_notification: true,
-        text: "a user leaving the chat",
-      };
-
-      io.emit("receiveMessage", msg);
+    socket.on("sendMessage", async (data) => {
+      await fetch(`http://localhost:3000/api/messages`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: data.message, userId: data.userId }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP ERROR! status ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          const msg = {
+            id: data.id,
+            is_notification: false,
+            text: data.message,
+            date: data.timestamp,
+            username: data.username,
+          };
+          io.emit("receiveMessage", msg);
+        })
+        .catch((error) => {
+          console.error("Error sending message:", error);
+        });
     });
   });
 

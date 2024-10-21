@@ -1,9 +1,10 @@
 {
   "name": "nextjs-chat",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
-    "dev": "node server.js",
+    "dev": "clear && node server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
     "lint": "next lint",

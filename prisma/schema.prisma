@@ -12,14 +12,16 @@ datasource db {
 
 // User model to store usernames and authentication data
 model User {
-  id       Int      @id @default(autoincrement())
-  username String   @unique
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  chats    Chat[]
 }
 
 // Chat model to store chat messages
 model Chat {
-  id          Int      @id @default(autoincrement())
-  message     String
-  timestamp   DateTime @default(now())
-  userId      Int
+  id        Int      @id @default(autoincrement())
+  message   String
+  timestamp DateTime @default(now())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
 }
