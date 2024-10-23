@@ -5,10 +5,10 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const initialUserData = [
-  { username: "alice" },
-  { username: "bob" },
-  { username: "charlie" },
-  { username: "dave" },
+  { username: "alice", password:"1" },
+  { username: "bob", password:"1" },
+  { username: "charlie", password:"1" },
+  { username: "dave", password:"1" },
 ];
 
 const initialChatData = [

@@ -18,14 +18,14 @@ const Chat = () => {
     }
   };
 
-  const handleLogin = async (user) => {
+  const handleLogin = async (username, password) => {
     try {
       const response = await fetch("/api/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username: user }),
+        body: JSON.stringify({ username: username, password: password }),
       });
 
       if (!response.ok) {
@@ -84,6 +84,7 @@ const Chat = () => {
           const isLastMessage = index === messages.length - 1;
           // Determine if the current message is a notification
           const isNotification = msg.is_notification;
+          const isUser = msg.username == user.username;
 
           return (
             <motion.div
@@ -105,7 +106,7 @@ const Chat = () => {
                 <div className="flex flex-col shadow rounded-lg p-2">
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-slate-800">
-                      {msg.username}
+                      {isUser ? `${msg.username} - Me` : msg.username}
                     </span>
                     <span className="text-gray-500 text-sm">
                       {new Date(msg.date).toLocaleTimeString()}
